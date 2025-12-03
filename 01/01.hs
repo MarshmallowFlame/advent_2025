@@ -15,10 +15,8 @@ getDirectedStep a = case a of
 
 -- Input is the current state (position, nrZeroes) and next turn as a string
 applyTurn :: (Integer, Integer) -> String -> (Integer, Integer)
-applyTurn (position, nrZeroes) nextTurn = do
+applyTurn (position, nrZeroes) nextTurn =
         let directedStep = getDirectedStep nextTurn
-        let newPosition = mod (position + directedStep) 100
-        let isZero = case newPosition of
-                0 -> 1
-                _ -> 0 
-        (newPosition, nrZeroes+isZero)
+            newPosition = mod (position + directedStep) 100
+            isZero = if newPosition == 0 then 1 else 0
+        in (newPosition, nrZeroes+isZero)
