@@ -39,7 +39,7 @@ applyTurn (position, nrZeroes) nextTurn =
             -- i.e. crossing the "true" zero. We do not want to count if we started on
             -- the "true" zero and continue into negatives, as that will be already have
             --been accounted for in the previous turn.
-            flipped = fromEnum (signum newPositionRaw == -1 && position/=0)
+            flipped = fromEnum $ signum newPositionRaw == -1 && position/=0
 
             -- Finally we want to check if we landed on "true" zero. Landing on any
             -- other zeroes will be accounted for by zeroesFromWholeTurns.
