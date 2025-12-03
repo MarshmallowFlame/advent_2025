@@ -7,19 +7,19 @@ main = do
     let (finalPosition, finalNrZeroes) = foldl applyTurn (50,0) theWords
     print finalNrZeroes
 
-getDirectedStep :: String -> Integer
+getDirectedStep :: String -> Int
 getDirectedStep a = case a of
         (d:steps) -> case d of
                 'R' -> 1 * read steps
                 'L' -> -1 * read steps
 
 -- Input is the current state (position, nrZeroes) and next turn as a string
-applyTurn :: (Integer, Integer) -> String -> (Integer, Integer)
+applyTurn :: (Int, Int) -> String -> (Int, Int)
 applyTurn (position, nrZeroes) nextTurn =
         let directedStep = getDirectedStep nextTurn
 
             newPositionRaw = (position + directedStep)
-            newPosition = mod newPositionRaw 100
+            newPosition = newPositionRaw `mod` 100
 
             -- There are a number of ways you can land on or pass 0.
             -- I see it like there is a symmetry around 0, and each
@@ -33,16 +33,16 @@ applyTurn (position, nrZeroes) nextTurn =
             -- these "other" zeroes, by dividing the new position with 100 mod 100.
             -- This will only account for crossing or landing on "fake" zeroes e.g.
             -- 100 or -200.
-            zeroesFromWholeTurns = quot (abs newPositionRaw) 100
+            zeroesFromWholeTurns = abs newPositionRaw `quot` 100
 
             -- The next check is for whether we crossed from positives into negatives,
             -- i.e. crossing the "true" zero. We do not want to count if we started on
             -- the "true" zero and continue into negatives, as that will be already have
             --been accounted for in the previous turn.
-            flipped = if ((signum newPositionRaw == -1) && (position/=0)) then 1 else 0
+            flipped = fromEnum (signum newPositionRaw == -1 && position/=0)
 
             -- Finally we want to check if we landed on "true" zero. Landing on any
             -- other zeroes will be accounted for by zeroesFromWholeTurns.
-            isZero = if newPositionRaw == 0 then 1 else 0
+            isZero = fromEnum $ newPositionRaw == 0
             newZeroes = nrZeroes+zeroesFromWholeTurns+flipped+isZero
         in (newPosition, newZeroes)
