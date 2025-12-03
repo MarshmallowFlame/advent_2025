@@ -4,8 +4,8 @@ import Control.Monad
 main = do  
     contents <- readFile "input.txt"
     let theWords = lines contents
-    let finalState = foldl applyTurn (50,0) theWords
-    print finalState
+    let (finalPosition, finalNrZeroes) = foldl applyTurn (50,0) theWords
+    print finalNrZeroes
 
 getDirectedStep :: String -> Integer
 getDirectedStep a = case a of
