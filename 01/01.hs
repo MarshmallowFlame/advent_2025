@@ -1,6 +1,3 @@
-import System.IO  
-import Control.Monad
-
 main = do  
     contents <- readFile "input.txt"
     let theWords = lines contents
@@ -20,3 +17,4 @@ applyTurn (position, nrZeroes) nextTurn =
             newPosition = mod (position + directedStep) 100
             isZero = if newPosition == 0 then 1 else 0
         in (newPosition, nrZeroes+isZero)
+         

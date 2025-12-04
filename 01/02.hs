@@ -1,6 +1,3 @@
-import System.IO  
-import Control.Monad
-
 main = do  
     contents <- readFile "input.txt"
     let theWords = lines contents
