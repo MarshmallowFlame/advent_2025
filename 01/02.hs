@@ -7,8 +7,8 @@ main = do
 getDirectedStep :: String -> Int
 getDirectedStep a = case a of
   (d : steps) -> case d of
-    'R' -> 1 * read steps
-    'L' -> -1 * read steps
+    'R' -> read steps
+    'L' -> -read steps
 
 -- Input is the current state (position, nrZeroes) and next turn as a string
 applyTurn :: (Int, Int) -> String -> (Int, Int)
