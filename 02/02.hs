@@ -13,7 +13,7 @@ main = do
       integers = concatMap ((\[a, b] -> [read a :: Int .. (read b)]) . (`wordswhen` '-')) idPairs
       strings = map show integers
       invalids = filter isInvalid strings
-      invalidsInts = map (read :: String -> Int) invalids
+      invalidsInts = map read invalids
 
   print $ sum invalidsInts
 
@@ -48,9 +48,3 @@ allAreEqual (first : rest) =
 
 getFactors :: Int -> [Int]
 getFactors i = [x | x <- [1 .. i `div` 2 + 1], i `mod` x == 0 && x /= i]
-
-p :: (Int, [Int]) -> Int -> (Int, [Int])
--- Input is the integer we are finding divisors for, and the divisors found so far. Output is new state.
-p (s, divs) cand =
-  -- If s is divisible by the candidate, add it to divs, else leave divs untouched.
-  if s `mod` cand == 0 then (s, cand : divs) else (s, divs)
