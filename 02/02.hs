@@ -39,22 +39,15 @@ isInvalid :: String -> Bool
 isInvalid s =
   let factors = getFactors $ length s
       splits = map (splitAtX s) factors
-      allEqual = filter allAreEqual splits
-   in allEqual /= []
+   in any allAreEqual splits
 
 allAreEqual :: [String] -> Bool
-allAreEqual l =
-  let first = head l
-   in all (first ==) l
+allAreEqual [] = False
+allAreEqual (first : rest) =
+  all (first ==) rest
 
 getFactors :: Int -> [Int]
-getFactors i =
-  -- We wanna test all values up to half of i.
-  let h = i `div` 2 + 1
-      toTest = [1 .. h]
-      (_, divs) = foldl p (i, []) toTest
-   in -- We don't wanna include i itself in its divisors.
-      filter (/= i) divs
+getFactors i = [x | x <- [1 .. i `div` 2 + 1], i `mod` x == 0 && x /= i]
 
 p :: (Int, [Int]) -> Int -> (Int, [Int])
 -- Input is the integer we are finding divisors for, and the divisors found so far. Output is new state.
