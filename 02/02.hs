@@ -1,10 +1,3 @@
-data S a = S
-  { matched :: Bool,
-    checkAgainst :: [a],
-    buffer :: [a],
-    str :: [a]
-  }
-
 -- Correct output: 45283684555
 main :: IO ()
 main = do
