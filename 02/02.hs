@@ -3,12 +3,10 @@ main :: IO ()
 main = do
   contents <- readFile "input.txt"
   let idPairs = wordswhen contents ','
-      integers = concatMap ((\[a, b] -> [read a :: Int .. (read b)]) . (`wordswhen` '-')) idPairs
-      strings = map show integers
-      invalids = filter isInvalid strings
-      invalidsInts = map read invalids
+      integers = idPairs >>= ((\[a, b] -> [read a :: Int .. (read b)]) . (`wordswhen` '-'))
+      invalids = [s | s <- integers, isInvalid $ show s]
 
-  print $ sum invalidsInts
+  print $ sum invalids
 
 wordswhen :: String -> Char -> [String]
 wordswhen s sep = case dropWhile (== sep) s of
@@ -17,11 +15,6 @@ wordswhen s sep = case dropWhile (== sep) s of
     where
       (w, s'') = break (== sep) s'
 
-splitInHalf :: String -> (String, String)
-splitInHalf s =
-  let half = length s `div` 2
-   in splitAt half s
-
 splitAtX :: String -> Int -> [String]
 splitAtX [] _ = []
 splitAtX s x =
@@ -29,10 +22,10 @@ splitAtX s x =
    in l : splitAtX r x
 
 isInvalid :: String -> Bool
-isInvalid s =
-  let factors = getFactors $ length s
-      splits = map (splitAtX s) factors
-   in any allAreEqual splits
+isInvalid s = any allAreEqual splits
+  where
+    factors = getFactors $ length s
+    splits = map (splitAtX s) factors
 
 allAreEqual :: [String] -> Bool
 allAreEqual [] = False
