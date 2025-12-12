@@ -5,6 +5,7 @@ data S a = S
     str :: [a]
   }
 
+-- Correct output: 45283684555
 main :: IO ()
 main = do
   contents <- readFile "input.txt"
@@ -24,9 +25,9 @@ wordswhen s sep = case dropWhile (== sep) s of
       (w, s'') = break (== sep) s'
 
 splitInHalf :: String -> (String, String)
-splitInHalf s = do
+splitInHalf s =
   let half = length s `div` 2
-  splitAt half s
+   in splitAt half s
 
 splitAtX :: String -> Int -> [String]
 splitAtX [] _ = []
@@ -35,27 +36,25 @@ splitAtX s x =
    in l : splitAtX r x
 
 isInvalid :: String -> Bool
-isInvalid s = do
+isInvalid s =
   let factors = getFactors $ length s
       splits = map (splitAtX s) factors
       allEqual = filter allAreEqual splits
-
-  allEqual /= []
+   in allEqual /= []
 
 allAreEqual :: [String] -> Bool
-allAreEqual l = do
+allAreEqual l =
   let first = head l
-  all (first ==) l
+   in all (first ==) l
 
 getFactors :: Int -> [Int]
-getFactors i = do
+getFactors i =
   -- We wanna test all values up to half of i.
   let h = i `div` 2 + 1
       toTest = [1 .. h]
       (_, divs) = foldl p (i, []) toTest
-      -- We don't wanna include i itself in its divisors.
-      divs_final = filter (/= i) divs
-  divs_final
+   in -- We don't wanna include i itself in its divisors.
+      filter (/= i) divs
 
 p :: (Int, [Int]) -> Int -> (Int, [Int])
 -- Input is the integer we are finding divisors for, and the divisors found so far. Output is new state.
