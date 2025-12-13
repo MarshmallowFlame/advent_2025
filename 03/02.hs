@@ -7,23 +7,18 @@ main = do
       code = sum $ map (read . findBiggest) l
   print code
 
-findXdigit :: String -> Int -> Char
-findXdigit s x = maximum $ removeLastX x s
-
 findBiggest :: String -> String
 findBiggest [] = []
-findBiggest l =
-  let xs = [11, 10 .. 0]
-      bests = scanl f (l, ' ') xs
-      digits = drop 1 $ map snd bests
-      seqs = drop 1 $ map fst bests
-   in digits
+findBiggest l = findDigits l [11, 10 .. 0]
+  where
+    findDigits _ [] = []
+    findDigits s (pos : rest) =
+      let c = findXdigit s pos
+          newS = drop 1 $ dropWhile (/= c) s
+       in c : findDigits newS rest
 
 removeLastX :: Int -> [a] -> [a]
 removeLastX x l = take (length l - x) l
 
-f :: (String, Char) -> Int -> (String, Char)
-f (s, lastC) x =
-  let bestC = findXdigit s x
-      newS = drop 1 $ dropWhile (/= bestC) s
-   in (newS, bestC)
+findXdigit :: String -> Int -> Char
+findXdigit s x = maximum $ removeLastX x s
