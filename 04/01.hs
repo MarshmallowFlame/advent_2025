@@ -4,7 +4,7 @@ main :: IO ()
 main = do
   contents <- readFile "input.txt"
   let l = lines contents
-      hpadded = concat (replicate (length $ head l) ".") : l ++ [concat (replicate (length $ head l) ".")]
+      hpadded = replicate (length $ head l) '.' : l ++ [replicate (length $ head l) '.']
       padded = map (\s -> '.' : s ++ ['.']) hpadded
       zipped = zip3 padded (tail padded) (tail (tail padded))
       deepZipped = map (applyTriple zipS) zipped
