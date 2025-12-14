@@ -21,7 +21,7 @@ pickUntilDone grid =
 pickStuff :: [[Char]] -> (Int, [[Char]])
 pickStuff grid =
   let padded = fullPad grid
-      zipped = zip3 padded (tail padded) (tail (tail padded))
+      zipped = zipS padded
       deepZipped = map (applyTriple zipS) zipped
       conv2d = concatMap zipThrees deepZipped
       picked = map pick conv2d
@@ -39,7 +39,7 @@ fullPad l =
 applyTriple :: (a -> b) -> (a, a, a) -> (b, b, b)
 applyTriple f (a, b, c) = (f a, f b, f c)
 
-zipS :: String -> [(Char, Char, Char)]
+zipS :: [a] -> [(a, a, a)]
 zipS s = zip3 s (tail s) (tail (tail s))
 
 zipThrees :: ([(a, a, a)], [(a, a, a)], [(a, a, a)]) -> [((a, a, a), (a, a, a), (a, a, a))]
